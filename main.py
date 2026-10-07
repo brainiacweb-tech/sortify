@@ -5,11 +5,26 @@ from pathlib import Path
 from app.services.logging_service import setup_logging
 from app.gui.main_window import MainWindow
 
+def enable_high_dpi_awareness():
+    """Enable crisp Per-Monitor V2 High DPI scaling on Windows to prevent blurriness on 4K displays."""
+    if sys.platform == "win32":
+        try:
+            import ctypes
+            # Set Process DPI Awareness (Per-Monitor DPI Aware V2 = 2)
+            ctypes.windll.shcore.SetProcessDpiAwareness(2)
+        except Exception:
+            try:
+                import ctypes
+                ctypes.windll.user32.SetProcessDPIAware()
+            except Exception:
+                pass
+
 def main():
     """Initialize application logging and launch desktop GUI main window."""
+    enable_high_dpi_awareness()
     setup_logging()
     logger = logging.getLogger("SmartFileOrganizer")
-    logger.info("Launching Smart File Organizer application...")
+    logger.info("Launching Smart File Organizer application with 4K High-DPI support...")
 
     try:
         app = MainWindow()

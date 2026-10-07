@@ -28,10 +28,13 @@ def validate_folder_path(folder_input: str | Path) -> tuple[bool, str, Path | No
 
     # Prevent organizing Windows system folders directly
     if sys.platform == "win32":
-        windir = os.environ.get("WINDIR", "C:\\Windows")
-        sys_root = Path(windir).resolve()
-        if path == sys_root or sys_root in path.parents:
-            return False, f"Refusing to organize system directory: '{path}'", None
+        protected_env_vars = ["WINDIR", "ProgramFiles", "ProgramFiles(x86)", "SystemRoot"]
+        for var in protected_env_vars:
+            val = os.environ.get(var)
+            if val:
+                sys_path = Path(val).resolve()
+                if path == sys_path or sys_path in path.parents:
+                    return False, f"Refusing to organize protected system directory: '{path}'", None
 
     # Test read access
     try:
