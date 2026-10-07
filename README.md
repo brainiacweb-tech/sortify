@@ -9,23 +9,25 @@
 [![UI](https://img.shields.io/badge/UI-CustomTkinter-blue)](https://github.com/TomSchimansky/CustomTkinter)
 [![Tests](https://img.shields.io/badge/tests-16%20passing-006B3F)](file:///c:/Users/USER/OneDrive/Desktop/Sortify/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/brainiacweb-tech/sortify/blob/main/LICENSE)
+[![Download](https://img.shields.io/github/v/release/brainiacweb-tech/sortify?label=download%20app&logo=windows&color=006B3F)](https://github.com/brainiacweb-tech/sortify/releases/latest)
 ![Offline](https://img.shields.io/badge/runs-100%25%20offline-111111)
 ![Data Loss: 0%](https://img.shields.io/badge/data%20loss-0%25-006B3F)
 
+**[⬇️ Download SORTIFY.exe for Windows](https://github.com/brainiacweb-tech/sortify/releases/latest)** ·
 **[📚 About](#-sortify-in-plain-words)** ·
 **[🖥️ App Features](#%EF%B8%8F-desktop-features--tour)** ·
 **[🚀 Quickstart](#-quickstart)** ·
 **[🏗️ Architecture](#%EF%B8%8F-architecture--project-structure)** ·
-**[🧪 Quality & Tests](#-quality-and-testing)** ·
-**[🤝 Contributing](#-contributing)**
+**[🧪 Quality & Tests](#-quality-and-testing)**
 
 </div>
 
 ---
 
 > [!TIP]
-> **Not a programmer? You don't need to write any code.** SORTIFY comes as a clean, high-performance desktop application:
-> clone or download the app, run `python main.py`, select any folder (`Downloads`, `Desktop`, `Documents`), preview dry-run triage, detect duplicate downloads with SHA-256, and organize your files with 100% safety and instant 1-click **UNDO**.
+> **Not a programmer? You don't need to write any code or install Python.** SORTIFY comes as a standalone
+> **Windows application**: [**Download `SORTIFY.exe`**](https://github.com/brainiacweb-tech/sortify/releases/latest),
+> double-click it, select any folder (`Downloads`, `Desktop`, `Documents`), preview dry-run triage, detect duplicate downloads with SHA-256, and organize your files with 100% safety and instant 1-click **UNDO**.
 
 ---
 
