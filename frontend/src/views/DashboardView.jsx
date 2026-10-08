@@ -13,7 +13,12 @@ const API_BASE = 'http://127.0.0.1:5000/api';
 export default function DashboardView({ selectedFolder, setSelectedFolder, onNavigateOrganize, onNavigateDuplicates, onNavigateHistory, onFileUploadClick, stats }) {
   const [realHistory, setRealHistory] = useState([]);
   const [realStats, setRealStats] = useState(stats || {});
-  const [defaultFolders, setDefaultFolders] = useState(null);
+  const [defaultFolders, setDefaultFolders] = useState({
+    downloads: 'C:\\Users\\USER\\Downloads',
+    desktop: 'C:\\Users\\USER\\Desktop',
+    documents: 'C:\\Users\\USER\\Documents',
+    pictures: 'C:\\Users\\USER\\Pictures'
+  });
   const fileInputRef = React.useRef(null);
 
   useEffect(() => {

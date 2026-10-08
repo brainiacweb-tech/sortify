@@ -3,7 +3,11 @@
 <img src="app/assets/logo.png" alt="SORTIFY Logo" width="480">
 
 ### Professional Desktop File Organizer & Smart Triage Engine
-#### 🪟 Windows · 🍎 macOS · 🐧 Linux · 🐍 Python 3.10+ · 🎨 CustomTkinter
+#### 🪟 Windows · 🍎 macOS · 🐧 Linux · 🐍 Python 3.10+ · 🎨 React + Vite + Tailwind
+
+<br />
+
+<img src="assets/laptop_hero_mockup.jpg" alt="Sortify Laptop Hero Showcase" width="850" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![UI](https://img.shields.io/badge/UI-CustomTkinter-blue)](https://github.com/TomSchimansky/CustomTkinter)
