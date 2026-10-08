@@ -15,7 +15,7 @@ DEFAULT_SETTINGS: Dict[str, Any] = {
     "confirm_before_organizing": True,
     "remember_last_folder": True,
     "last_selected_folder": "",
-    "theme": "System",
+    "theme": "Dark",
     "date_based_organization": False,
     "custom_categories": {}
 }

@@ -10,7 +10,19 @@ from pathlib import Path
 from typing import Optional
 from app.core.duplicate_detector import DuplicateDetector, DuplicateDetectionResult
 from app.core.file_operations import safe_move_file
-from app.utils.constants import DUPLICATES_FOLDER_NAME
+from app.utils.constants import (
+    FONT_FAMILY,
+    DUPLICATES_FOLDER_NAME,
+    COLOR_CARD_BG,
+    COLOR_CARD_BORDER,
+    COLOR_PRIMARY,
+    COLOR_PRIMARY_HOVER,
+    COLOR_SUCCESS,
+    COLOR_WARNING,
+    COLOR_TEXT_PRIMARY,
+    COLOR_TEXT_SECONDARY,
+    COLOR_TEXT_MUTED
+)
 from app.utils.helpers import format_file_size
 
 class DuplicatesView(ctk.CTkFrame):
@@ -27,45 +39,128 @@ class DuplicatesView(ctk.CTkFrame):
         self.grid_rowconfigure(3, weight=1)
 
         # Header Title
-        title_label = ctk.CTkLabel(self, text="🔍 Cryptographic Duplicate Finder", font=ctk.CTkFont(size=24, weight="bold"), anchor="w")
-        title_label.grid(row=0, column=0, padx=20, pady=(20, 5), sticky="w")
+        title_label = ctk.CTkLabel(
+            self,
+            text="🔍 Cryptographic Duplicate Finder",
+            font=ctk.CTkFont(family=FONT_FAMILY, size=24, weight="bold"),
+            text_color=COLOR_TEXT_PRIMARY,
+            anchor="w"
+        )
+        title_label.grid(row=0, column=0, padx=24, pady=(24, 4), sticky="w")
 
-        subtitle_label = ctk.CTkLabel(self, text="Identify exact duplicate files using SHA-256 hashing and safely quarantine them.", font=ctk.CTkFont(size=13), text_color="#8E9AAF", anchor="w")
-        subtitle_label.grid(row=1, column=0, padx=20, pady=(0, 15), sticky="w")
+        subtitle_label = ctk.CTkLabel(
+            self,
+            text="Identify exact duplicate files using SHA-256 hashing and safely quarantine them.",
+            font=ctk.CTkFont(family=FONT_FAMILY, size=13),
+            text_color=COLOR_TEXT_MUTED,
+            anchor="w"
+        )
+        subtitle_label.grid(row=1, column=0, padx=24, pady=(0, 16), sticky="w")
 
         # Control Bar
-        ctrl_frame = ctk.CTkFrame(self, fg_color="#1E293B", corner_radius=12)
-        ctrl_frame.grid(row=2, column=0, padx=20, pady=(0, 15), sticky="ew")
+        ctrl_frame = ctk.CTkFrame(
+            self,
+            fg_color=COLOR_CARD_BG,
+            corner_radius=16,
+            border_width=1,
+            border_color=COLOR_CARD_BORDER
+        )
+        ctrl_frame.grid(row=2, column=0, padx=24, pady=(0, 16), sticky="ew")
         ctrl_frame.grid_columnconfigure(1, weight=1)
 
-        f_label = ctk.CTkLabel(ctrl_frame, text="Scan Directory:", font=ctk.CTkFont(size=13, weight="bold"))
-        f_label.grid(row=0, column=0, padx=(15, 10), pady=15, sticky="w")
+        f_label = ctk.CTkLabel(
+            ctrl_frame,
+            text="Scan Directory:",
+            font=ctk.CTkFont(family=FONT_FAMILY, size=13, weight="bold"),
+            text_color=COLOR_TEXT_PRIMARY
+        )
+        f_label.grid(row=0, column=0, padx=(16, 10), pady=16, sticky="w")
 
-        self.folder_entry = ctk.CTkEntry(ctrl_frame, placeholder_text="Select directory to scan for duplicate files...", height=35)
-        self.folder_entry.grid(row=0, column=1, padx=10, pady=15, sticky="ew")
+        self.folder_entry = ctk.CTkEntry(
+            ctrl_frame,
+            placeholder_text="Select directory to scan for duplicate files...",
+            height=38,
+            corner_radius=10,
+            fg_color=("#F1F5F9", "#151624"),
+            border_color=COLOR_CARD_BORDER,
+            text_color=COLOR_TEXT_PRIMARY,
+            font=ctk.CTkFont(family=FONT_FAMILY, size=12)
+        )
+        self.folder_entry.grid(row=0, column=1, padx=10, pady=16, sticky="ew")
 
-        browse_btn = ctk.CTkButton(ctrl_frame, text="Browse Folder", width=120, height=35, fg_color="#3B82F6", hover_color="#2563EB", command=self._handle_browse)
-        browse_btn.grid(row=0, column=2, padx=(10, 15), pady=15)
+        browse_btn = ctk.CTkButton(
+            ctrl_frame,
+            text="Browse Folder",
+            width=130,
+            height=38,
+            corner_radius=10,
+            font=ctk.CTkFont(family=FONT_FAMILY, size=12, weight="bold"),
+            fg_color=COLOR_PRIMARY,
+            hover_color=COLOR_PRIMARY_HOVER,
+            command=self._handle_browse
+        )
+        browse_btn.grid(row=0, column=2, padx=(10, 10), pady=16)
 
-        self.scan_btn = ctk.CTkButton(ctrl_frame, text="🔍 Detect Duplicates", height=35, font=ctk.CTkFont(weight="bold"), fg_color="#059669", hover_color="#047857", command=self._handle_start_scan)
-        self.scan_btn.grid(row=0, column=3, padx=(0, 15), pady=15)
+        self.scan_btn = ctk.CTkButton(
+            ctrl_frame,
+            text="🔍 Detect Duplicates",
+            height=38,
+            corner_radius=10,
+            font=ctk.CTkFont(family=FONT_FAMILY, size=13, weight="bold"),
+            fg_color=COLOR_SUCCESS,
+            hover_color="#059669",
+            command=self._handle_start_scan
+        )
+        self.scan_btn.grid(row=0, column=3, padx=(0, 16), pady=16)
 
         # Actions & Results bar
         act_frame = ctk.CTkFrame(ctrl_frame, fg_color="transparent")
-        act_frame.grid(row=1, column=0, columnspan=4, padx=15, pady=(0, 15), sticky="ew")
+        act_frame.grid(row=1, column=0, columnspan=4, padx=16, pady=(0, 16), sticky="ew")
 
-        self.quarantine_btn = ctk.CTkButton(act_frame, text="🛡️ Quarantine Duplicates to 'Duplicates/'", fg_color="#D97706", hover_color="#B45309", state="disabled", command=self._handle_quarantine)
+        self.quarantine_btn = ctk.CTkButton(
+            act_frame,
+            text="🛡️ Quarantine Duplicates to 'Duplicates/'",
+            fg_color=COLOR_WARNING,
+            hover_color="#B45309",
+            height=38,
+            corner_radius=10,
+            font=ctk.CTkFont(family=FONT_FAMILY, size=13, weight="bold"),
+            state="disabled",
+            command=self._handle_quarantine
+        )
         self.quarantine_btn.pack(side="left", padx=(0, 10))
 
-        self.open_btn = ctk.CTkButton(act_frame, text="📂 Open File Location", fg_color="#4B5563", hover_color="#374151", state="disabled", command=self._handle_open_location)
+        self.open_btn = ctk.CTkButton(
+            act_frame,
+            text="📂 Open File Location",
+            fg_color=("#CBD5E1", "#374151"),
+            hover_color=("#94A3B8", "#4B5563"),
+            text_color=COLOR_TEXT_PRIMARY,
+            height=38,
+            corner_radius=10,
+            font=ctk.CTkFont(family=FONT_FAMILY, size=12),
+            state="disabled",
+            command=self._handle_open_location
+        )
         self.open_btn.pack(side="left")
 
-        self.summary_lbl = ctk.CTkLabel(act_frame, text="Scan a directory to inspect duplicate groups.", text_color="#A0AAB8")
+        self.summary_lbl = ctk.CTkLabel(
+            act_frame,
+            text="Scan a directory to inspect duplicate groups.",
+            text_color=COLOR_TEXT_MUTED,
+            font=ctk.CTkFont(family=FONT_FAMILY, size=12)
+        )
         self.summary_lbl.pack(side="right", padx=10)
 
         # Table area
-        table_frame = ctk.CTkFrame(self, fg_color="#1E293B", corner_radius=12)
-        table_frame.grid(row=3, column=0, padx=20, pady=(0, 20), sticky="nsew")
+        table_frame = ctk.CTkFrame(
+            self,
+            fg_color=COLOR_CARD_BG,
+            corner_radius=16,
+            border_width=1,
+            border_color=COLOR_CARD_BORDER
+        )
+        table_frame.grid(row=3, column=0, padx=24, pady=(0, 24), sticky="nsew")
         table_frame.grid_columnconfigure(0, weight=1)
         table_frame.grid_rowconfigure(0, weight=1)
 
@@ -87,8 +182,8 @@ class DuplicatesView(ctk.CTkFrame):
         vsb = ttk.Scrollbar(table_frame, orient="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=vsb.set)
 
-        self.tree.grid(row=0, column=0, sticky="nsew", padx=(10, 0), pady=10)
-        vsb.grid(row=0, column=1, sticky="ns", padx=(0, 10), pady=10)
+        self.tree.grid(row=0, column=0, sticky="nsew", padx=(12, 0), pady=12)
+        vsb.grid(row=0, column=1, sticky="ns", padx=(0, 12), pady=12)
         self.tree.bind("<<TreeviewSelect>>", self._on_select)
 
     def _handle_browse(self):

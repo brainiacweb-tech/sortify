@@ -20,11 +20,14 @@ logs/
 sample_sandbox/
 IT IS WELL/
 
-# Virtual Environments
+# Virtual Environments & Dependencies
 .venv/
 venv/
 ENV/
 env/
+node_modules/
+frontend/node_modules/
+scratch/
 
 # IDE & OS Files
 .vscode/

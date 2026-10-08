@@ -1,4 +1,4 @@
-"""Main window application layout and sidebar view router."""
+"""Main window application layout and sidebar view router with full Light/Dark/System theme support."""
 import customtkinter as ctk
 import tkinter as tk
 from tkinter import messagebox
@@ -17,7 +17,19 @@ from app.gui.rules_view import RulesView
 from app.gui.settings_view import SettingsView
 from app.services.config_service import ConfigService
 from app.services.stats_service import StatsService
-from app.utils.constants import APP_NAME, APP_VERSION, DEVELOPER_NAME, FONT_FAMILY
+from app.utils.constants import (
+    APP_NAME,
+    APP_VERSION,
+    DEVELOPER_NAME,
+    FONT_FAMILY,
+    COLOR_SIDEBAR_BG,
+    COLOR_BG_MAIN,
+    COLOR_PRIMARY,
+    COLOR_PRIMARY_HOVER,
+    COLOR_TEXT_PRIMARY,
+    COLOR_TEXT_SECONDARY,
+    COLOR_TEXT_MUTED
+)
 
 class MainWindow(ctk.CTk):
     """Top-level main window orchestrating sidebar navigation and view routing."""
@@ -49,12 +61,11 @@ class MainWindow(ctk.CTk):
         # Apply user theme preference
         theme = self.config_service.get("theme", "System")
         ctk.set_appearance_mode(theme)
-        ctk.set_default_color_theme("blue")
 
         # Window Setup
         self.title(f"{APP_NAME} v{APP_VERSION} - Developed by {DEVELOPER_NAME}")
-        self.geometry("1150x750")
-        self.minsize(950, 650)
+        self.geometry("1180x780")
+        self.minsize(980, 680)
 
         # Main Layout: 2 Columns (Sidebar & Content)
         self.grid_columnconfigure(1, weight=1)
@@ -68,7 +79,12 @@ class MainWindow(ctk.CTk):
 
     def _build_sidebar(self):
         """Construct sidebar navigation panel."""
-        self.sidebar_frame = ctk.CTkFrame(self, width=220, corner_radius=0, fg_color="#0F172A")
+        self.sidebar_frame = ctk.CTkFrame(
+            self,
+            width=230,
+            corner_radius=0,
+            fg_color=COLOR_SIDEBAR_BG
+        )
         self.sidebar_frame.grid(row=0, column=0, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(7, weight=1)
 
@@ -81,17 +97,27 @@ class MainWindow(ctk.CTk):
                 brand_label = ctk.CTkLabel(self.sidebar_frame, image=ctk_logo, text="")
                 brand_label.grid(row=0, column=0, padx=15, pady=(20, 2), sticky="w")
             except Exception:
-                brand_label = ctk.CTkLabel(self.sidebar_frame, text=f"✨ {APP_NAME}", font=ctk.CTkFont(family=FONT_FAMILY, size=20, weight="bold"), text_color="#F8FAFC")
+                brand_label = ctk.CTkLabel(
+                    self.sidebar_frame,
+                    text=f"✨ {APP_NAME}",
+                    font=ctk.CTkFont(family=FONT_FAMILY, size=20, weight="bold"),
+                    text_color=COLOR_TEXT_PRIMARY
+                )
                 brand_label.grid(row=0, column=0, padx=20, pady=(20, 2), sticky="w")
         else:
-            brand_label = ctk.CTkLabel(self.sidebar_frame, text=f"✨ {APP_NAME}", font=ctk.CTkFont(family=FONT_FAMILY, size=20, weight="bold"), text_color="#F8FAFC")
+            brand_label = ctk.CTkLabel(
+                self.sidebar_frame,
+                text=f"✨ {APP_NAME}",
+                font=ctk.CTkFont(family=FONT_FAMILY, size=20, weight="bold"),
+                text_color=COLOR_TEXT_PRIMARY
+            )
             brand_label.grid(row=0, column=0, padx=20, pady=(20, 2), sticky="w")
 
         dev_sub_label = ctk.CTkLabel(
             self.sidebar_frame,
             text=f"by {DEVELOPER_NAME}",
             font=ctk.CTkFont(family=FONT_FAMILY, size=11, weight="bold"),
-            text_color="#3B82F6"
+            text_color=COLOR_PRIMARY
         )
         dev_sub_label.grid(row=0, column=0, padx=20, pady=(80, 10), sticky="w")
 
@@ -111,12 +137,12 @@ class MainWindow(ctk.CTk):
             btn = ctk.CTkButton(
                 self.sidebar_frame,
                 text=label_text,
-                height=40,
-                corner_radius=8,
+                height=42,
+                corner_radius=10,
                 font=ctk.CTkFont(family=FONT_FAMILY, size=13, weight="bold"),
                 fg_color="transparent",
-                text_color="#94A3B8",
-                hover_color="#1E293B",
+                text_color=COLOR_TEXT_SECONDARY,
+                hover_color=("#F1F5F9", "#1E1F30"),
                 anchor="w",
                 command=lambda v=view_id: self.navigate_to(v)
             )
@@ -127,16 +153,21 @@ class MainWindow(ctk.CTk):
         about_btn = ctk.CTkButton(
             self.sidebar_frame,
             text="ℹ️ About Sortify",
-            height=30,
+            height=32,
             font=ctk.CTkFont(family=FONT_FAMILY, size=12),
             fg_color="transparent",
-            text_color="#64748B",
-            hover_color="#1E293B",
+            text_color=COLOR_TEXT_MUTED,
+            hover_color=("#F1F5F9", "#1E1F30"),
             command=self._show_about_dialog
         )
-        about_btn.grid(row=8, column=0, padx=12, pady=(0, 15), sticky="ew")
+        about_btn.grid(row=8, column=0, padx=12, pady=(0, 10), sticky="ew")
 
-        ver_lbl = ctk.CTkLabel(self.sidebar_frame, text=f"Version {APP_VERSION}", font=ctk.CTkFont(family=FONT_FAMILY, size=11), text_color="#475569")
+        ver_lbl = ctk.CTkLabel(
+            self.sidebar_frame,
+            text=f"Version {APP_VERSION}",
+            font=ctk.CTkFont(family=FONT_FAMILY, size=11),
+            text_color=COLOR_TEXT_MUTED
+        )
         ver_lbl.grid(row=9, column=0, padx=20, pady=(0, 15), sticky="w")
 
     def _build_content_area(self):
@@ -200,9 +231,9 @@ class MainWindow(ctk.CTk):
         # Update button highlights
         for vid, btn in self.nav_buttons.items():
             if vid == view_id:
-                btn.configure(fg_color="#2563EB", text_color="#FFFFFF")
+                btn.configure(fg_color=COLOR_PRIMARY, text_color="#FFFFFF")
             else:
-                btn.configure(fg_color="transparent", text_color="#94A3B8")
+                btn.configure(fg_color="transparent", text_color=COLOR_TEXT_SECONDARY)
 
         # Refresh state if entering dashboard or history
         if view_id == "dashboard" and hasattr(target_view, "refresh_stats"):
