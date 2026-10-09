@@ -168,7 +168,7 @@ export default function DashboardView({ selectedFolder, setSelectedFolder, onNav
           <div>
             <p style={{ fontFamily: 'var(--font-heading)', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>CATEGORIES</p>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>
-              {Object.keys(realStats.category_breakdown || {}).length}
+              {realStats.categories_count ?? Object.keys(realStats.category_breakdown || {}).length}
             </h3>
           </div>
           <div style={{ width: '40px', height: '40px', borderRadius: 'var(--rounded-sm)', backgroundColor: 'rgb(217, 241, 225)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--colors-link)' }}>

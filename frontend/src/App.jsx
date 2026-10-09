@@ -39,7 +39,8 @@ export default function App() {
     total_files_organized: 0,
     total_runs: 0,
     duplicates_found: 0,
-    category_breakdown: {}
+    category_breakdown: {},
+    categories_count: 0
   });
 
   useEffect(() => {

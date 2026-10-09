@@ -15,7 +15,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%20%7C%20Vite%20%7C%20Tailwind-61DAFB?logo=react)](https://react.dev/)
 [![Backend](https://img.shields.io/badge/Backend-Flask%20%7C%20PyWebView-000000?logo=flask)](https://flask.palletsprojects.com/)
-[![Tests](https://img.shields.io/badge/tests-16%20passing-006B3F)](file:///c:/Users/USER/OneDrive/Desktop/Sortify/tests)
+[![Tests](https://img.shields.io/badge/tests-26%20passing-006B3F)](file:///c:/Users/USER/OneDrive/Desktop/Sortify/tests)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/brainiacweb-tech/sortify/blob/main/LICENSE)
 [![Download](https://img.shields.io/github/v/release/brainiacweb-tech/sortify?label=download%20app&logo=windows&color=006B3F)](https://github.com/brainiacweb-tech/sortify/releases/latest)
 ![Offline](https://img.shields.io/badge/runs-100%25%20offline-111111)
@@ -108,6 +108,10 @@ flowchart LR
 2. **Scan & Preview**: SORTIFY calculates category destinations, flags potential collision renames, and detects duplicate downloads.
 3. **Execute Safely**: Move files with 100% collision-free path guarantee.
 4. **Undo Whenever Needed**: Click **Undo Batch** in the history log to return files instantly.
+
+### A Fresh Start for Every New User
+
+SORTIFY does not ship with sample files or pre-filled activity. A new installation starts with zero activity statistics and an empty history; those records are stored locally in the current Windows user's application data and are not included in the installer. Files you choose to upload are kept in separate upload batches so a later upload cannot accidentally include files from an earlier batch. Existing local history is preserved when updating SORTIFY.
 
 ---
 
@@ -266,6 +270,7 @@ sortify/
 │   ├── store_poster_720x1080.png
 │   └── laptop_hero_mockup.jpg
 ├── tests/                         # Comprehensive Pytest test suite
+│   ├── test_api_server.py
 │   ├── test_classifier.py
 │   ├── test_duplicates.py
 │   ├── test_file_operations.py

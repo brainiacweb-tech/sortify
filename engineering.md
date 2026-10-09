@@ -63,6 +63,7 @@ smart-file-organizer-python/
 │       └── default_rules.json    # Standard classification mapping
 ├── logs/                         # App runtime log files
 ├── tests/                        # Comprehensive pytest test suite
+│   ├── test_api_server.py
 │   ├── test_classifier.py
 │   ├── test_organizer.py
 │   ├── test_duplicates.py
@@ -71,7 +72,6 @@ smart-file-organizer-python/
 ├── docs/                         # Documentation assets & screenshots
 │   └── screenshots/
 ├── main.py                       # App entry point
-├── create_demo_files.py          # Utility script to generate safe test environment
 ├── requirements.txt
 ├── README.md
 ├── LICENSE

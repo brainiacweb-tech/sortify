@@ -3,14 +3,16 @@ import os
 import sys
 from datetime import datetime
 from pathlib import Path
+from uuid import uuid4
 
 # Ensure workspace root is in python path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
-
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+from werkzeug.utils import secure_filename
+from werkzeug.utils import secure_filename
 
 from app.services.config_service import ConfigService
 from app.core.file_classifier import FileClassifier
@@ -76,7 +78,8 @@ def get_stats():
         "total_files_organized": stats.total_files_organized,
         "total_runs": stats.total_runs,
         "duplicates_found": stats.total_duplicates_found,
-        "category_breakdown": stats.category_breakdown
+        "category_breakdown": stats.category_breakdown,
+        "categories_count": len(config_service.get_all_categories())
     })
 
 @app.route("/api/scan", methods=["POST"])
@@ -398,34 +401,33 @@ def get_default_folders():
         if local_app_data:
             user_home = Path(local_app_data).parent.parent
 
-    sandbox_dir = get_user_app_dir() / "sample_sandbox"
-    sandbox_dir.mkdir(parents=True, exist_ok=True)
-
     folders = {
         "downloads": str(user_home / "Downloads"),
         "desktop": str(user_home / "Desktop"),
         "documents": str(user_home / "Documents"),
         "pictures": str(user_home / "Pictures"),
-        "videos": str(user_home / "Videos"),
-        "sandbox": str(sandbox_dir)
+        "videos": str(user_home / "Videos")
     }
     return jsonify(folders)
 
 @app.route("/api/upload", methods=["POST"])
 def upload_files():
-    """Receive uploaded files and save them to sample_sandbox folder for organization."""
+    """Save an upload batch to its own folder for organization."""
     from app.utils.constants import get_user_app_dir
     if 'files' not in request.files:
         return jsonify({"error": "No file part in request"}), 400
 
     uploaded_files = request.files.getlist('files')
-    target_dir = get_user_app_dir() / "sample_sandbox"
+    target_dir = get_user_app_dir() / "uploads" / uuid4().hex
     target_dir.mkdir(parents=True, exist_ok=True)
 
     saved_paths = []
     for file in uploaded_files:
         if file.filename:
-            save_path = target_dir / file.filename
+            filename = secure_filename(file.filename)
+            if not filename:
+                continue
+            save_path = target_dir / filename
             file.save(save_path)
             saved_paths.append(str(save_path))
 

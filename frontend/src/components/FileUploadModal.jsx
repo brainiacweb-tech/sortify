@@ -34,7 +34,7 @@ export default function FileUploadModal({ isOpen, onClose, onOrganizeUploaded })
         formData.append('files', f);
       }
 
-      // Step 1: Upload files to disk (sample_sandbox)
+      // Step 1: Save this upload batch to its own folder
       const uploadRes = await fetch(`${API_BASE}/upload`, {
         method: 'POST',
         body: formData
@@ -45,7 +45,7 @@ export default function FileUploadModal({ isOpen, onClose, onOrganizeUploaded })
         throw new Error(uploadData.error || 'Upload failed');
       }
 
-      // Step 2: Scan the uploaded sandbox folder
+      // Step 2: Scan only this upload batch
       const scanRes = await fetch(`${API_BASE}/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -53,7 +53,7 @@ export default function FileUploadModal({ isOpen, onClose, onOrganizeUploaded })
       });
       const scanData = await scanRes.json();
 
-      // Step 3: Execute organization on sandbox folder
+      // Step 3: Organize the uploaded files
       if (scanRes.ok && scanData.items && scanData.items.length > 0) {
         const orgRes = await fetch(`${API_BASE}/organize`, {
           method: 'POST',
