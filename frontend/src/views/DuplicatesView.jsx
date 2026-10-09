@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, ShieldCheck, Copy, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
-
-const API_BASE = 'http://127.0.0.1:5000/api';
+import { API_BASE } from '../apiConfig';
 
 export default function DuplicatesView({ targetDir, setTargetDir }) {
   const [isScanning, setIsScanning] = useState(false);

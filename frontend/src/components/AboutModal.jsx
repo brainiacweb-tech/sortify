@@ -23,7 +23,7 @@ export default function AboutModal({ isOpen, onClose }) {
 
   const handleCheckUpdates = () => {
     confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
-    alert("SORTIFY is up to date! You are running version 1.0.1 (Latest Release).");
+    alert("SORTIFY is up to date! You are running version 1.0.2 (Latest Release).");
   };
 
   const authorsList = [
@@ -125,7 +125,7 @@ export default function AboutModal({ isOpen, onClose }) {
             fontWeight: 600,
             marginTop: '6px'
           }}>
-            <CheckCircle2 size={13} /> Version 1.0.1 (Desktop Edition)
+            <CheckCircle2 size={13} /> Version 1.0.2 (Desktop Edition)
           </div>
         </div>
 

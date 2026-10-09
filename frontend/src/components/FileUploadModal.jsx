@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { Upload, X, Play } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import logoImg from '../assets/logo.png';
-
-const API_BASE = 'http://127.0.0.1:5000/api';
+import { API_BASE } from '../apiConfig';
 
 export default function FileUploadModal({ isOpen, onClose, onOrganizeUploaded }) {
   if (!isOpen) return null;

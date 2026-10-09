@@ -2,7 +2,7 @@
 ; Generated for Microsoft Store Win32 / Direct Installer Submission
 
 #define MyAppName "SORTIFY"
-#define MyAppVersion "1.0.1"
+#define MyAppVersion "1.0.2"
 #define MyAppPublisher "Francis Kusi"
 #define MyAppURL "https://github.com/brainiacweb-tech/sortify"
 #define MyAppExeName "SORTIFY.exe"
@@ -28,7 +28,7 @@ WizardStyle=modern
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 ArchitecturesInstallIn64BitMode=x64compatible
-VersionInfoVersion=1.0.1.0
+VersionInfoVersion=1.0.2.0
 VersionInfoCompany={#MyAppPublisher}
 VersionInfoDescription=SORTIFY - Smart File Organizer
 VersionInfoCopyright=Copyright (C) 2026 {#MyAppPublisher}

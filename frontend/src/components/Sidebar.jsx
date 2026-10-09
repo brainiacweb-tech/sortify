@@ -200,7 +200,7 @@ export default function Sidebar({ activeTab, setActiveTab, onShowAbout, userInfo
           {!isCollapsed && (
             <div style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
               <p style={{ fontFamily: 'var(--font-heading)', fontSize: '12px', fontWeight: 600, color: 'var(--text-primary)' }}>{name}</p>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: 'var(--colors-link)', fontWeight: 500 }}>SORTIFY v1.0.1</p>
+              <p style={{ fontFamily: 'var(--font-body)', fontSize: '11px', color: 'var(--colors-link)', fontWeight: 500 }}>SORTIFY v1.0.2</p>
             </div>
           )}
         </div>

@@ -7,8 +7,7 @@ import {
   ArrowRight,
   CheckCircle2
 } from 'lucide-react';
-
-const API_BASE = 'http://127.0.0.1:5000/api';
+import { API_BASE } from '../apiConfig';
 
 export default function DashboardView({ selectedFolder, setSelectedFolder, onNavigateOrganize, onNavigateDuplicates, onNavigateHistory, onFileUploadClick, stats }) {
   const [realHistory, setRealHistory] = useState([]);
