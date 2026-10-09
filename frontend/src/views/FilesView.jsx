@@ -25,9 +25,10 @@ import {
   ExternalLink,
   ShieldCheck
 } from 'lucide-react';
+import { API_BASE } from '../apiConfig';
 
 export default function FilesView({ initialFolder }) {
-  const [currentFolder, setCurrentFolder] = useState(initialFolder || 'C:/Users/USER/Downloads');
+  const [currentFolder, setCurrentFolder] = useState(initialFolder || '');
   const [parentFolder, setParentFolder] = useState('');
   const [isProtected, setIsProtected] = useState(false);
   const [items, setItems] = useState([]);
@@ -62,7 +63,7 @@ export default function FilesView({ initialFolder }) {
   const loadFiles = async (folder) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://127.0.0.1:5000/api/files/list?folder=${encodeURIComponent(folder)}`);
+      const res = await fetch(`${API_BASE}/files/list?folder=${encodeURIComponent(folder)}`);
       const data = await res.json();
       if (data && data.items) {
         setItems(data.items);
@@ -102,7 +103,7 @@ export default function FilesView({ initialFolder }) {
     setContextMenu(null);
 
     try {
-      const res = await fetch('http://127.0.0.1:5000/api/files/action', {
+      const res = await fetch(`${API_BASE}/files/action`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

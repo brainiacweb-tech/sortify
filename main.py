@@ -22,7 +22,10 @@ def enable_high_dpi_awareness():
 def main():
     """Initialize application logging and launch desktop GUI main window."""
     enable_high_dpi_awareness()
-    setup_logging()
+    try:
+        setup_logging()
+    except Exception as e:
+        print(f"Logging setup warning: {e}", file=sys.stderr)
     logger = logging.getLogger("SmartFileOrganizer")
     logger.info("Launching Smart File Organizer application with 4K High-DPI support...")
 

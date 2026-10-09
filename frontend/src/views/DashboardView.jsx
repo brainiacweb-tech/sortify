@@ -14,10 +14,10 @@ export default function DashboardView({ selectedFolder, setSelectedFolder, onNav
   const [realHistory, setRealHistory] = useState([]);
   const [realStats, setRealStats] = useState(stats || {});
   const [defaultFolders, setDefaultFolders] = useState({
-    downloads: 'C:\\Users\\USER\\Downloads',
-    desktop: 'C:\\Users\\USER\\Desktop',
-    documents: 'C:\\Users\\USER\\Documents',
-    pictures: 'C:\\Users\\USER\\Pictures'
+    downloads: '',
+    desktop: '',
+    documents: '',
+    pictures: ''
   });
   const fileInputRef = React.useRef(null);
 
@@ -168,7 +168,7 @@ export default function DashboardView({ selectedFolder, setSelectedFolder, onNav
           <div>
             <p style={{ fontFamily: 'var(--font-heading)', fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>CATEGORIES</p>
             <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '24px', fontWeight: 600, color: 'var(--text-primary)', marginTop: '2px' }}>
-              {Object.keys(realStats.category_breakdown || {}).length || 11}
+              {Object.keys(realStats.category_breakdown || {}).length}
             </h3>
           </div>
           <div style={{ width: '40px', height: '40px', borderRadius: 'var(--rounded-sm)', backgroundColor: 'rgb(217, 241, 225)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--colors-link)' }}>

@@ -387,25 +387,39 @@ def select_folder():
 @app.route("/api/default-folders", methods=["GET"])
 def get_default_folders():
     """Get standard system directories on user's Windows machine."""
+    from app.utils.constants import get_user_app_dir
+    
     user_home = Path.home()
+    user_profile = os.environ.get("USERPROFILE")
+    if user_profile and "system32" not in user_profile.lower() and os.path.exists(user_profile):
+        user_home = Path(user_profile)
+    elif "system32" in str(user_home).lower():
+        local_app_data = os.environ.get("LOCALAPPDATA")
+        if local_app_data:
+            user_home = Path(local_app_data).parent.parent
+
+    sandbox_dir = get_user_app_dir() / "sample_sandbox"
+    sandbox_dir.mkdir(parents=True, exist_ok=True)
+
     folders = {
         "downloads": str(user_home / "Downloads"),
         "desktop": str(user_home / "Desktop"),
         "documents": str(user_home / "Documents"),
         "pictures": str(user_home / "Pictures"),
         "videos": str(user_home / "Videos"),
-        "sandbox": str(Path(os.getcwd()) / "sample_sandbox")
+        "sandbox": str(sandbox_dir)
     }
     return jsonify(folders)
 
 @app.route("/api/upload", methods=["POST"])
 def upload_files():
     """Receive uploaded files and save them to sample_sandbox folder for organization."""
+    from app.utils.constants import get_user_app_dir
     if 'files' not in request.files:
         return jsonify({"error": "No file part in request"}), 400
 
     uploaded_files = request.files.getlist('files')
-    target_dir = Path(os.getcwd()) / "sample_sandbox"
+    target_dir = get_user_app_dir() / "sample_sandbox"
     target_dir.mkdir(parents=True, exist_ok=True)
 
     saved_paths = []

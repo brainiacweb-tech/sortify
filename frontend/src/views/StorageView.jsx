@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { HardDrive, PieChart, FileText, Trash2, ArrowRight, AlertTriangle, ShieldCheck, Folder } from 'lucide-react';
+import { API_BASE } from '../apiConfig';
 
 export default function StorageView({ targetFolder }) {
-  const [folder, setFolder] = useState(targetFolder || 'C:/Users/USER/Downloads');
+  const [folder, setFolder] = useState(targetFolder || '');
   const [analytics, setAnalytics] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +14,7 @@ export default function StorageView({ targetFolder }) {
   const loadAnalytics = async (dir) => {
     setLoading(true);
     try {
-      const res = await fetch(`http://127.0.0.1:5000/api/storage/analytics?folder=${encodeURIComponent(dir)}`);
+      const res = await fetch(`${API_BASE}/storage/analytics?folder=${encodeURIComponent(dir)}`);
       const data = await res.json();
       if (data) {
         setAnalytics(data);
@@ -28,7 +29,7 @@ export default function StorageView({ targetFolder }) {
   const handleRecycleFile = async (path) => {
     if (!window.confirm("Move this large file to Windows Recycle Bin?")) return;
     try {
-      const res = await fetch('http://127.0.0.1:5000/api/files/action', {
+      const res = await fetch(`${API_BASE}/files/action`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'recycle', paths: [path] })

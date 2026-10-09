@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Settings, Moon, Sun, Monitor, AlertTriangle, User, Check } from 'lucide-react';
+import { API_BASE } from '../apiConfig';
 
 export default function SettingsView({ theme, setTheme, userInfo, setUserInfo }) {
   const [editingName, setEditingName] = useState(userInfo?.name || '');
@@ -13,7 +14,7 @@ export default function SettingsView({ theme, setTheme, userInfo, setUserInfo })
 
   const handleSaveName = async () => {
     try {
-      const res = await fetch('http://127.0.0.1:5000/api/user-info', {
+      const res = await fetch(`${API_BASE}/user-info`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: editingName })

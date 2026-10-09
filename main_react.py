@@ -44,6 +44,11 @@ def ensure_api_server_running():
         time.sleep(1.5)
 
 def main():
+    try:
+        from app.services.logging_service import setup_logging
+        setup_logging()
+    except Exception as e:
+        print(f"[WARN] Logging setup failed: {e}", file=sys.stderr)
     ensure_api_server_running()
     
     # Point directly to Flask production server on port 5000

@@ -1,12 +1,31 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+import os
+from pathlib import Path
+
+block_cipher = None
 
 a = Analysis(
-    ['main.py'],
+    ['main_react.py'],
     pathex=[],
     binaries=[],
-    datas=[('C:\\Users\\USER\\AppData\\Roaming\\Python\\Python314\\site-packages\\customtkinter', 'customtkinter'), ('app/assets', 'app/assets'), ('app/config', 'app/config')],
-    hiddenimports=[],
+    datas=[
+        ('app', 'app'),
+        ('frontend/dist', 'frontend/dist'),
+        ('assets', 'assets'),
+    ],
+    hiddenimports=[
+        'pyzipper',
+        'flask',
+        'flask_cors',
+        'webview',
+        'win32com',
+        'win32com.client',
+        'pythoncom',
+        'win32api',
+        'win32gui',
+        'win32con'
+    ],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -14,7 +33,7 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
-pyz = PYZ(a.pure)
+pyz = PYZ(a.pure, cipher=block_cipher)
 
 exe = EXE(
     pyz,
@@ -35,7 +54,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['app\\assets\\logo.ico'],
+    icon=['assets\\logo.ico'],
     version='file_version_info.txt',
     manifest='app_manifest.xml',
 )

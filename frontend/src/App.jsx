@@ -4,6 +4,7 @@ import Header from './components/Header';
 import MenuBar from './components/MenuBar';
 import FileUploadModal from './components/FileUploadModal';
 import AboutModal from './components/AboutModal';
+import WelcomeModal from './components/WelcomeModal';
 import DashboardView from './views/DashboardView';
 import OrganizeView from './views/OrganizeView';
 import DuplicatesView from './views/DuplicatesView';
@@ -15,6 +16,8 @@ import UserGuideView from './views/UserGuideView';
 import FilesView from './views/FilesView';
 import StorageView from './views/StorageView';
 
+import { API_BASE } from './apiConfig';
+
 export default function App() {
   const params = new URLSearchParams(window.location.search);
   const [activeTab, setActiveTab] = useState(params.get('tab') || 'dashboard');
@@ -22,12 +25,19 @@ export default function App() {
   const [theme, setTheme] = useState(params.get('theme') || 'light');
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
-  const [selectedFolder, setSelectedFolder] = useState('C:/Users/USER/Downloads');
+  const [isWelcomeModalOpen, setIsWelcomeModalOpen] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState('');
   const [userInfo, setUserInfo] = useState({ name: 'User', initials: 'US' });
 
+  useEffect(() => {
+    if (localStorage.getItem('sortify_welcomed') !== 'true') {
+      setIsWelcomeModalOpen(true);
+    }
+  }, []);
+
   const [stats, setStats] = useState({
-    total_files_organized: 535,
-    total_runs: 8,
+    total_files_organized: 0,
+    total_runs: 0,
     duplicates_found: 0,
     category_breakdown: {}
   });
@@ -37,7 +47,14 @@ export default function App() {
   }, [theme]);
 
   useEffect(() => {
-    fetch('http://127.0.0.1:5000/api/default-folders')
+    fetch(`${API_BASE}/stats`)
+      .then(res => res.json())
+      .then(data => {
+        if (data) setStats(data);
+      })
+      .catch(() => {});
+
+    fetch(`${API_BASE}/default-folders`)
       .then(res => res.json())
       .then(data => {
         if (data && data.downloads) {
@@ -46,7 +63,7 @@ export default function App() {
       })
       .catch(() => {});
 
-    fetch('http://127.0.0.1:5000/api/user-info')
+    fetch(`${API_BASE}/user-info`)
       .then(res => res.json())
       .then(data => {
         if (data && data.name) {
@@ -81,7 +98,7 @@ export default function App() {
           return;
         }
       }
-      const res = await fetch('http://127.0.0.1:5000/api/select-folder', {
+      const res = await fetch(`${API_BASE}/select-folder`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ initial: selectedFolder })
@@ -200,6 +217,14 @@ export default function App() {
       <AboutModal 
         isOpen={isAboutModalOpen}
         onClose={() => setIsAboutModalOpen(false)}
+      />
+
+      {/* Welcome Onboarding Modal */}
+      <WelcomeModal 
+        isOpen={isWelcomeModalOpen}
+        onClose={() => setIsWelcomeModalOpen(false)}
+        onStartOrganizing={() => setActiveTab('organize')}
+        onOpenGuide={() => setActiveTab('guide')}
       />
     </div>
   );

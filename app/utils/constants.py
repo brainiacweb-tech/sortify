@@ -1,17 +1,65 @@
-"""Application constants for Smart File Organizer."""
+import os
+import tempfile
 from pathlib import Path
 
-APP_NAME = "SORTIFY"
-DEVELOPER_NAME = "Francis Kusi"
-APP_VERSION = "1.0.0"
-REPO_NAME = "smart-file-organizer-python"
-FONT_FAMILY = "Raleway"
+def get_user_app_dir() -> Path:
+    """
+    Get a safe, writeable application directory for storing logs, config, and history.
+    Prioritizes %LOCALAPPDATA%, %APPDATA%, %USERPROFILE%, and temp directory fallback.
+    Guarantees write access and prevents ever targeting system32 or read-only directories.
+    """
+    candidates = []
+
+    # 1. Standard Windows LocalAppData (%LOCALAPPDATA%\Sortify)
+    local_app_data = os.environ.get("LOCALAPPDATA")
+    if local_app_data and "system32" not in local_app_data.lower():
+        candidates.append(Path(local_app_data) / "Sortify")
+
+    # 2. Standard Windows AppData (%APPDATA%\Sortify)
+    app_data = os.environ.get("APPDATA")
+    if app_data and "system32" not in app_data.lower():
+        candidates.append(Path(app_data) / "Sortify")
+
+    # 3. User Profile / Home directory (%USERPROFILE%\.smart_file_organizer)
+    user_profile = os.environ.get("USERPROFILE")
+    if user_profile and "system32" not in user_profile.lower():
+        candidates.append(Path(user_profile) / ".smart_file_organizer")
+
+    try:
+        home = Path.home()
+        if "system32" not in str(home).lower():
+            candidates.append(home / ".smart_file_organizer")
+    except Exception:
+        pass
+
+    # 4. Fallback to System Temp folder (%TEMP%\Sortify)
+    candidates.append(Path(tempfile.gettempdir()) / "Sortify")
+
+    for target in candidates:
+        try:
+            target.mkdir(parents=True, exist_ok=True)
+            # Test write permission by creating a temporary file
+            test_file = target / ".write_test"
+            test_file.write_text("ok", encoding="utf-8")
+            if test_file.exists():
+                test_file.unlink()
+            return target
+        except Exception:
+            continue
+
+    # Absolute fallback
+    fallback = Path(tempfile.gettempdir()) / "Sortify"
+    try:
+        fallback.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+    return fallback
 
 # Default configuration directory in user profile
-APP_DIR = Path.home() / ".smart_file_organizer"
+APP_DIR = get_user_app_dir()
 CONFIG_FILE = APP_DIR / "config.json"
 HISTORY_FILE = APP_DIR / "history.json"
-LOG_DIR = Path("logs")
+LOG_DIR = APP_DIR / "logs"
 LOG_FILE = LOG_DIR / "smart_file_organizer.log"
 
 # Default File Hashing Chunk Size (1 MB)

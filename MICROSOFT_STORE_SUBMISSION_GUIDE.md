@@ -129,3 +129,42 @@ When filling out the **IARC Age Rating** questionnaire in Partner Center:
 3. Select **Application Package** -> point to `SORTIFY.exe`.
 4. Upload the generated `.msix` file under the **Packages** section in Partner Center.
 5. Click **Submit to the Store**!
+
+---
+
+## 🚀 6. Post-Approval Process Steps
+
+Once your app completes certification and is officially published on the Microsoft Store, follow these post-approval steps to maintain quality, engage users, and streamline future app updates:
+
+### 1. 🌐 Store Listing Verification & Badge Integration
+- **Verify Public Store Page**: Visit your live Microsoft Store page URL (`https://apps.microsoft.com/detail/<your-store-id>`) to verify layout formatting, screenshots, short/full descriptions, and links.
+- **Add Official Store Badge**: Generate and download the official **Get it from Microsoft** badge from Partner Center under *Promote -> Badges*.
+- **Update Project Documentation**: Add the Store badge and direct download link to [`README.md`](file:///c:/Users/USER/OneDrive/Desktop/Sortify/README.md) and project marketing materials.
+
+### 2. 📊 Monitor App Health & Acquisition Analytics
+- **Partner Center Health Dashboard**: Regularly inspect crash counts, hang rates, and exception stack traces reported automatically by Windows Error Reporting (WER).
+- **Acquisitions & Funnel Metrics**: Review daily installs, active users, geographic reach, and Store listing conversion rates under Partner Center *Analytics -> Acquisitions*.
+
+### 3. 💬 Customer Feedback & Review Triage
+- **Respond to Ratings**: Use Partner Center *Analytics -> Reviews* to read and reply directly to user reviews. Providing prompt support builds user trust.
+- **GitHub Issue Synchronization**: Map customer reports from Store reviews to open issues on [GitHub Issues](https://github.com/brainiacweb-tech/sortify/issues) for issue triage and bug tracking.
+
+### 4. 🔄 App Update & Release Management Workflow
+When releasing new features, performance optimizations, or bug fixes:
+1. **Update Version Strings**: Update the version number across [`file_version_info.txt`](file:///c:/Users/USER/OneDrive/Desktop/Sortify/file_version_info.txt) and [`app_manifest.xml`](file:///c:/Users/USER/OneDrive/Desktop/Sortify/app_manifest.xml) (e.g. `1.0.0.0` -> `1.1.0.0`).
+2. **Re-package Binaries**: Run the build setup script:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\install_for_msix.ps1
+   ```
+3. **Generate Updated `.msix`**: Use the Microsoft MSIX Packaging Tool to package the newly generated `SORTIFY.exe`.
+4. **Create New Submission in Partner Center**:
+   - Navigate to your app in Partner Center and click **Update**.
+   - Upload the new `.msix` package (Partner Center will automatically detect version increment).
+   - Update **Release Notes** under Store Listing.
+5. **Staged Rollout (Optional)**: Enable gradual package rollout (e.g. 20% initial rollout) to monitor stability before 100% deployment.
+6. **Submit for Certification**: Click **Submit to the Store**.
+
+### 5. 🛡️ Security & Maintenance Routine
+- Perform periodic security audits on Python dependencies (`requirements.txt`).
+- Verify offline privacy guarantees remain intact across all newly added features.
+
